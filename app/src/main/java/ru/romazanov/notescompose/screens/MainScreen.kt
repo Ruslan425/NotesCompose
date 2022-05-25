@@ -9,21 +9,26 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
+import ru.romazanov.notescompose.MainVM
+import ru.romazanov.notescompose.model.Note
 import ru.romazanov.notescompose.navigation.Screen
 import ru.romazanov.notescompose.ui.NoteCard
 
 @Composable
 fun MainScreen(
     navHostController: NavHostController,
+    viewModel: MainVM
 ) {
 
-    val list = List(10) {"fnfke ".repeat(1000)}
-
-    val title = "Заголовок"
+  val list by remember { mutableStateOf(viewModel.readTest.value) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -45,10 +50,10 @@ fun MainScreen(
             verticalArrangement = Arrangement.spacedBy(24.dp),
             contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp)
         ){
-            items(list) { item ->
+            items(list!!) { item ->
                 NoteCard(
-                    text = item,
-                    title = title,
+                    text = item.subTitle,
+                    title = item.title,
                     onClick = { navHostController.navigate(Screen.NoteScreen.route) }
                 )
             }
