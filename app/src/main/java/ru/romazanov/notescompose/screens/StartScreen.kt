@@ -37,11 +37,13 @@ fun StartScreen(
             )
             ButtonDefault(onClick = {
                 viewModel.initialDatabase(TYPE_ROOM)
+                viewModel.getList(TYPE_ROOM)
                 navHostController.navigate(Screen.MainScreen.route)
                                     },
                 text = "Местная базаданных")
             ButtonDefault(onClick = {
                 viewModel.initialDatabase(TYPE_FIREBASE)
+                viewModel.getList(TYPE_FIREBASE)
                 navHostController.navigate(Screen.MainScreen.route) },
                 text = "Удаленная базаданных")
         }

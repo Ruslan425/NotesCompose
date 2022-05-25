@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.romazanov.notescompose.model.Note
+import ru.romazanov.notescompose.utils.TYPE_FIREBASE
 import ru.romazanov.notescompose.utils.TYPE_ROOM
 import kotlin.random.Random
 
@@ -14,15 +15,14 @@ class MainVM : ViewModel() {
     }
 
     val dbType: MutableLiveData<String> by lazy {
-        MutableLiveData<String>(TYPE_ROOM)
+        MutableLiveData<String>()
     }
 
-
-    init {
+    fun getList(dbType: String) {
         readTest.value =
-            when (dbType.value) {
+            when (dbType) {
                 TYPE_ROOM -> {
-                    List(10){
+                    List(10) {
                         Note(
                             id = Random.nextInt(),
                             title = "Заголовок",
@@ -31,19 +31,12 @@ class MainVM : ViewModel() {
                     }
                 }
                 else -> {
-                    List(10){
-                        Note(
-                            id = Random.nextInt(),
-                            title = "Заголовок",
-                            subTitle = "Текс".repeat(100)
-                        )
-                    }
+                    listOf()
                 }
             }
-        }
+    }
 
     fun initialDatabase(type: String) {
-
         dbType.value = type
         Log.d("check Data", "MainViewModel initDatabase")
     }
