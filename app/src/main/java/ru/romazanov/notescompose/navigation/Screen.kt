@@ -1,8 +1,10 @@
 package ru.romazanov.notescompose.navigation
 
+import ru.romazanov.notescompose.utils.Constants
+
 sealed class Screen(val route: String){
-    object StartScreen: Screen("start_screen")
-    object MainScreen: Screen("main_screen")
-    object NoteScreen: Screen("note_screen")
-    object AddScreen: Screen("add_note_screen")
+    object StartScreen: Screen(Constants.Screens.START_SCREEN)
+    object MainScreen: Screen(Constants.Screens.MAIN_SCREEN)
+    object NoteScreen: Screen(Constants.Screens.NOTE_SCREEN)
+    object AddScreen: Screen(Constants.Screens.ADD_SCREEN)
 }

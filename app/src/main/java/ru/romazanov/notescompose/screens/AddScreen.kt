@@ -16,24 +16,24 @@ import androidx.navigation.NavHostController
 import ru.romazanov.notescompose.MainVM
 import ru.romazanov.notescompose.model.Note
 import ru.romazanov.notescompose.navigation.Screen
+import ru.romazanov.notescompose.utils.Constants
 
 @Composable
 fun AddScreen(
     navHostController: NavHostController,
     viewModel: MainVM
 ) {
-    var title by remember { mutableStateOf("Заголовок") }
+    var title by remember { mutableStateOf("") }
 
-    var text by remember{ mutableStateOf("Заметка") }
+    var text by remember{ mutableStateOf("") }
 
-    var buttonActivate by remember { mutableStateOf(false)}
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
             FloatingActionButton(
                 content = {
-                    Icon(Icons.Filled.Add, contentDescription = "Добавить")
+                    Icon(Icons.Filled.Add, contentDescription = null)
                 },
                 onClick = {
                     viewModel.addNote(
@@ -66,7 +66,8 @@ fun AddScreen(
                         backgroundColor = MaterialTheme.colors.background,
                         focusedIndicatorColor = Color.Blue.copy(alpha = 0.5f)
                     ),
-                    singleLine = true
+                    singleLine = true,
+                    label = { Text(Constants.Keys.NOTE) }
                 )
                 OutlinedTextField(
                     value = text,
@@ -79,7 +80,8 @@ fun AddScreen(
                     colors = TextFieldDefaults.textFieldColors(
                         backgroundColor = MaterialTheme.colors.background,
                         focusedIndicatorColor = Color.Blue.copy(alpha = 0.5f)
-                    )
+                    ),
+                    label = { Text(Constants.Keys.TITLE)},
                 )
             }
         }

@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import ru.romazanov.notescompose.MainVM
 import ru.romazanov.notescompose.navigation.Screen
 import ru.romazanov.notescompose.ui.ButtonDefault
+import ru.romazanov.notescompose.utils.Constants
 import ru.romazanov.notescompose.utils.TYPE_FIREBASE
 import ru.romazanov.notescompose.utils.TYPE_ROOM
 
@@ -31,7 +32,7 @@ fun StartScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Что будем использовать?",
+                text = Constants.Keys.START_SCREEN_QUESTION,
                 fontSize = 24.sp,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
@@ -42,7 +43,7 @@ fun StartScreen(
                         navHostController.navigate(Screen.MainScreen.route)
                     }
                 },
-                text = "Местная базаданных"
+                text = Constants.Keys.ROOM_DATABASE
             )
             ButtonDefault(
                 onClick = {
@@ -50,7 +51,7 @@ fun StartScreen(
                         navHostController.navigate(Screen.MainScreen.route)
                     }
                 },
-                text = "Удаленная базаданных"
+                text = Constants.Keys.FIREBASE_DATABASE
             )
         }
     }

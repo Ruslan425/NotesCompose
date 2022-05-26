@@ -3,12 +3,13 @@ package ru.romazanov.notescompose.database.room.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.romazanov.notescompose.model.Note
+import ru.romazanov.notescompose.utils.Constants.Keys.NOTES_TABLE
 
 
 @Dao
 interface NoteDao {
 
-    @Query("SELECT * FROM notes_table")
+    @Query("SELECT * FROM $NOTES_TABLE")
     fun getNoteList(): LiveData<List<Note>>
 
     @Insert
