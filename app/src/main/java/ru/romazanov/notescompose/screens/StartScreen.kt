@@ -29,23 +29,29 @@ fun StartScreen(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
-        ){
+        ) {
             Text(
                 text = "Что будем использовать?",
                 fontSize = 24.sp,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
-            ButtonDefault(onClick = {
-                viewModel.initialDatabase(TYPE_ROOM)
-                viewModel.getList(TYPE_ROOM)
-                navHostController.navigate(Screen.MainScreen.route)
-                                    },
-                text = "Местная базаданных")
-            ButtonDefault(onClick = {
-                viewModel.initialDatabase(TYPE_FIREBASE)
-                viewModel.getList(TYPE_FIREBASE)
-                navHostController.navigate(Screen.MainScreen.route) },
-                text = "Удаленная базаданных")
+            ButtonDefault(
+                onClick = {
+
+                    viewModel.initialDatabase(TYPE_ROOM) {
+                        navHostController.navigate(Screen.MainScreen.route)
+                    }
+                },
+                text = "Местная базаданных"
+            )
+            ButtonDefault(
+                onClick = {
+                    viewModel.initialDatabase(TYPE_FIREBASE) {
+                        navHostController.navigate(Screen.MainScreen.route)
+                    }
+                },
+                text = "Удаленная базаданных"
+            )
         }
     }
 }

@@ -13,10 +13,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import ru.romazanov.notescompose.MainVM
 
 @Composable
 fun NoteScreen(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    viewModel: MainVM
 ) {
     var title by rememberSaveable { mutableStateOf("Заголовок") }
 

@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -26,14 +27,9 @@ fun MainScreen(
     navHostController: NavHostController,
     viewModel: MainVM
 ) {
-
-    val list by remember { mutableStateOf(viewModel.readTest.value!!) }
-
-    val state = rememberScaffoldState()
-    val scope = rememberCoroutineScope()
+    val list = viewModel.readNotes().observeAsState(initial = listOf()).value
 
     Scaffold(
-        scaffoldState = state,
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
             FloatingActionButton(
@@ -54,24 +50,15 @@ fun MainScreen(
             verticalArrangement = Arrangement.spacedBy(24.dp),
             contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp)
         ) {
-            if (list.isNotEmpty()) {
-                items(list) { item ->
-                    NoteCard(
-                        text = item.subTitle,
-                        title = item.title,
-                        onClick = { navHostController.navigate(Screen.NoteScreen.route) }
-                    )
-                }
-            } else {
-                scope.launch {
-                    state.snackbarHostState.showSnackbar(
-                        "Нет заметок",
-                        actionLabel = "Ok"
-                    )
-                }
+            items(list) { item ->
+                NoteCard(
+                    text = item.subTitle,
+                    title = item.title,
+                    onClick = { navHostController.navigate(Screen.NoteScreen.route) }
+                )
             }
-
         }
+
     }
 
 }

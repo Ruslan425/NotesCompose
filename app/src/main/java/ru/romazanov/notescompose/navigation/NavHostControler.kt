@@ -14,24 +14,22 @@ import ru.romazanov.notescompose.screens.StartScreen
 
 @Composable
 fun NavHostControler(
-
+    viewModel: MainVM,
+    navController: NavHostController
 ) {
-    val navController = rememberNavController()
-    val viewModel = MainVM()
-
     NavHost(navController = navController, startDestination = Screen.StartScreen.route) {
 
         composable(Screen.StartScreen.route) {
             StartScreen(navHostController = navController, viewModel)
         }
         composable(Screen.AddScreen.route) {
-            AddScreen(navHostController = navController)
+            AddScreen(navHostController = navController, viewModel)
         }
         composable(Screen.MainScreen.route) {
             MainScreen(navHostController = navController, viewModel)
         }
         composable(Screen.NoteScreen.route) {
-            NoteScreen(navHostController = navController)
+            NoteScreen(navHostController = navController, viewModel)
         }
     }
 

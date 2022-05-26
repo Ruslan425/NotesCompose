@@ -1,6 +1,6 @@
 package ru.romazanov.notescompose.screens
 
-import androidx.compose.foundation.BorderStroke
+
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -8,26 +8,25 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import ru.romazanov.notescompose.MainVM
+import ru.romazanov.notescompose.model.Note
 import ru.romazanov.notescompose.navigation.Screen
 
 @Composable
 fun AddScreen(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    viewModel: MainVM
 ) {
-    var title by rememberSaveable { mutableStateOf("Заголовок") }
+    var title by remember { mutableStateOf("Заголовок") }
 
-    var text by rememberSaveable { mutableStateOf("Заметка") }
+    var text by remember{ mutableStateOf("Заметка") }
+
+    var buttonActivate by remember { mutableStateOf(false)}
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -37,7 +36,14 @@ fun AddScreen(
                     Icon(Icons.Filled.Add, contentDescription = "Добавить")
                 },
                 onClick = {
-                    navHostController.navigate(Screen.MainScreen.route)
+                    viewModel.addNote(
+                        Note(
+                            title = title,
+                            subTitle = text
+                        )
+                    ) {
+                        navHostController.navigate(Screen.MainScreen.route)
+                    }
                 }
             )
         },

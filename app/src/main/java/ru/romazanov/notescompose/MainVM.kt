@@ -1,45 +1,50 @@
 package ru.romazanov.notescompose
 
+
+import android.app.Application
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import ru.romazanov.notescompose.database.room.AppRoomDatabase
+import ru.romazanov.notescompose.database.room.repository.RoomRepository
 import ru.romazanov.notescompose.model.Note
-import ru.romazanov.notescompose.utils.TYPE_FIREBASE
+import ru.romazanov.notescompose.utils.REPOSITORY
 import ru.romazanov.notescompose.utils.TYPE_ROOM
-import kotlin.random.Random
 
-class MainVM : ViewModel() {
+class MainVM(application: Application) : ViewModel() {
 
-    val readTest: MutableLiveData<List<Note>> by lazy {
-        MutableLiveData<List<Note>>()
+
+   private val context = application
+
+    fun initialDatabase(type: String, onSuccess: () -> Unit) {
+        Log.d("check Data", "MainViewModel initDatabase")
+        when(type) {
+            TYPE_ROOM -> {
+                val dao = AppRoomDatabase.getInstance(context).getRoomDao()
+                REPOSITORY = RoomRepository(dao)
+                onSuccess()
+            }
+        }
     }
 
-    val dbType: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
-    }
 
-    fun getList(dbType: String) {
-        readTest.value =
-            when (dbType) {
-                TYPE_ROOM -> {
-                    List(10) {
-                        Note(
-                            id = Random.nextInt(),
-                            title = "Заголовок",
-                            subTitle = "Текс".repeat(100)
-                        )
-                    }
-                }
-                else -> {
-                    listOf()
+    fun addNote(note: Note, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            REPOSITORY.create(note = note) {
+                viewModelScope.launch(Dispatchers.Main) {
+                    onSuccess()
                 }
             }
+        }
     }
 
-    fun initialDatabase(type: String) {
-        dbType.value = type
-        Log.d("check Data", "MainViewModel initDatabase")
-    }
+
+    fun readNotes() = REPOSITORY.readData
+
+
 }
 
 
