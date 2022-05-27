@@ -18,6 +18,7 @@ class Constants {
         const val ROOM_DATABASE = "Местная базаданных"
         const val FIREBASE_DATABASE = "Удаленная базаданных"
         const val ID = "Id"
+        const val UPDATE_NOTE = "Редактировать"
     }
 
     object Screens {

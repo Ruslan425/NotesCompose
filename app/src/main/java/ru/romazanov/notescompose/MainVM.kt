@@ -16,11 +16,11 @@ import ru.romazanov.notescompose.utils.TYPE_ROOM
 class MainVM(application: Application) : ViewModel() {
 
 
-   private val context = application
+    private val context = application
 
     fun initialDatabase(type: String, onSuccess: () -> Unit) {
-        Log.d("check Data", "MainViewModel initDatabase")
-        when(type) {
+        Log.d("check Data", "MainViewModel initDatabase type $type")
+        when (type) {
             TYPE_ROOM -> {
                 val dao = AppRoomDatabase.getInstance(context).getRoomDao()
                 REPOSITORY = RoomRepository(dao)
@@ -42,6 +42,27 @@ class MainVM(application: Application) : ViewModel() {
 
 
     fun readNotes() = REPOSITORY.readData
+
+
+    fun updateNote(note: Note, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            REPOSITORY.update(note = note) {
+                viewModelScope.launch(Dispatchers.Main) {
+                    onSuccess()
+                }
+            }
+        }
+    }
+
+    fun deleteNote(note: Note, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            REPOSITORY.delete(note = note) {
+                viewModelScope.launch(Dispatchers.Main) {
+                    onSuccess()
+                }
+            }
+        }
+    }
 
 
 }
