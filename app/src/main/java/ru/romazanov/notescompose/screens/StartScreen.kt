@@ -25,6 +25,7 @@ fun StartScreen(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        backgroundColor = MaterialTheme.colors.surface
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),

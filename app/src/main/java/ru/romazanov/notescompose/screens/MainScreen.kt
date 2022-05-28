@@ -41,10 +41,7 @@ fun MainScreen(
     ) {
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(24.dp),
-            contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp)
+                .fillMaxSize()
         ) {
             items(list) { note ->
                 NoteCard(

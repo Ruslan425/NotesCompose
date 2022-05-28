@@ -13,18 +13,15 @@ class RoomRepository(
         get() = noteDao.getNoteList()
 
 
-    override suspend fun create(note: Note, onSuccess: () -> Unit) {
+    override suspend fun create(note: Note) {
         noteDao.addNote(note)
-        onSuccess()
     }
 
-    override suspend fun update(note: Note, onSuccess: () -> Unit) {
+    override suspend fun update(note: Note) {
         noteDao.updateNote(note)
-        onSuccess()
     }
 
-    override suspend fun delete(note: Note, onSuccess: () -> Unit) {
+    override suspend fun delete(note: Note) {
         noteDao.deleteNote(note)
-        onSuccess()
     }
 }

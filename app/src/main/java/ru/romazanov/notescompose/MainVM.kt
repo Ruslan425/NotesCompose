@@ -30,13 +30,9 @@ class MainVM(application: Application) : ViewModel() {
     }
 
 
-    fun addNote(note: Note, onSuccess: () -> Unit) {
+    fun addNote(note: Note) {
         viewModelScope.launch(Dispatchers.IO) {
-            REPOSITORY.create(note = note) {
-                viewModelScope.launch(Dispatchers.Main) {
-                    onSuccess()
-                }
-            }
+            REPOSITORY.create(note = note)
         }
     }
 
@@ -44,23 +40,15 @@ class MainVM(application: Application) : ViewModel() {
     fun readNotes() = REPOSITORY.readData
 
 
-    fun updateNote(note: Note, onSuccess: () -> Unit) {
+    fun updateNote(note: Note) {
         viewModelScope.launch(Dispatchers.IO) {
-            REPOSITORY.update(note = note) {
-                viewModelScope.launch(Dispatchers.Main) {
-                    onSuccess()
-                }
-            }
+            REPOSITORY.update(note = note)
         }
     }
 
-    fun deleteNote(note: Note, onSuccess: () -> Unit) {
+    fun deleteNote(note: Note) {
         viewModelScope.launch(Dispatchers.IO) {
-            REPOSITORY.delete(note = note) {
-                viewModelScope.launch(Dispatchers.Main) {
-                    onSuccess()
-                }
-            }
+            REPOSITORY.delete(note = note)
         }
     }
 

@@ -1,8 +1,10 @@
 package ru.romazanov.notescompose.screens
 
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -12,19 +14,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import ru.romazanov.notescompose.MainVM
 import ru.romazanov.notescompose.model.Note
-import androidx.compose.material.TopAppBar
-import ru.romazanov.notescompose.utils.Constants
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.platform.LocalFocusManager
 import ru.romazanov.notescompose.navigation.Screen
-import ru.romazanov.notescompose.utils.Constants.Keys.NOTE
-import ru.romazanov.notescompose.utils.Constants.Keys.TITLE
-import ru.romazanov.notescompose.utils.Constants.Keys.UPDATE_NOTE
+
 
 
 @Composable
@@ -40,6 +38,8 @@ fun NoteScreen(
         title = "NONE",
         subTitle = "ERROR"
     )
+
+    val focusManager = LocalFocusManager.current
 
     var title by remember { mutableStateOf("") }
 
@@ -58,26 +58,18 @@ fun NoteScreen(
                 elevation = 16.dp,
             ) {
                 IconButton(onClick = {
-                    viewModel.updateNote(note) {
-                        viewModel.updateNote(
-                            Note(
-                                id = note.id,
-                                title = title,
-                                subTitle = subTitle
-                            )
-                        ) {
-                            navHostController.navigate(Screen.MainScreen.route)
-                        }
-                    }
+                    focusManager.clearFocus()
+                    navHostController.navigate(Screen.MainScreen.route)
                 }) {
                     Icon(imageVector = Icons.Default.Done, contentDescription = "Сохранить")
                 }
                 Spacer(Modifier.weight(1f, true))
 
                 IconButton(onClick = {
-                    viewModel.deleteNote(note) {
-                        navHostController.navigate(Screen.MainScreen.route)
-                    }
+                    focusManager.clearFocus()
+                    viewModel.deleteNote(note)
+                    navHostController.navigate(Screen.MainScreen.route)
+
                 }) {
                     Icon(imageVector = Icons.Default.Delete, contentDescription = "Удалить")
                 }
@@ -87,34 +79,62 @@ fun NoteScreen(
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
 
-                OutlinedTextField(
+                Text(text = "Заголовок",
+                    modifier = Modifier
+                        .padding(top = 24.dp, start = 24.dp, bottom = 4.dp),
+                    style = MaterialTheme.typography.h5
+                )
+
+                BasicTextField(
                     value = title,
                     onValueChange = {
                         title = it
+                        viewModel.updateNote(
+                            Note(
+                                id = note.id,
+                                title = title,
+                                subTitle = subTitle
+                            )
+                        )
                     },
                     modifier = Modifier
-                        .padding(10.dp)
+                        .padding(top = 24.dp, start = 24.dp)
                         .fillMaxWidth(),
-                    colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = MaterialTheme.colors.background,
-                        focusedIndicatorColor = Color.Blue.copy(alpha = 0.5f)
-                    ),
                     singleLine = true,
-                    label = { Text(TITLE) },
+                    textStyle = MaterialTheme.typography.h5
                 )
-                OutlinedTextField(
+                Canvas(modifier = Modifier.fillMaxWidth()
+                    .padding(top = 4.dp)) {
+                    drawLine(
+                        color = Color(0xFF2196F3),
+                        start = Offset(x = 60f, y = 0f),
+                        end = Offset(x = 1020f, y = 0f),
+                        strokeWidth = 5F,
+                        cap = StrokeCap.Round
+                    )
+                }
+
+                Text(text = "Заметка",
+                    modifier = Modifier
+                        .padding(top = 24.dp, start = 24.dp, bottom = 4.dp),
+                    style = MaterialTheme.typography.body1
+                )
+                BasicTextField(
                     value = subTitle,
                     onValueChange = {
                         subTitle = it
+                        viewModel.updateNote(
+                            Note(
+                                id = note.id,
+                                title = title,
+                                subTitle = subTitle
+                            )
+                        )
                     },
                     modifier = Modifier
-                        .padding(10.dp)
+                        .padding(top = 24.dp, start = 24.dp)
                         .fillMaxWidth(),
-                    colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = MaterialTheme.colors.background,
-                        focusedIndicatorColor = Color.Blue.copy(alpha = 0.5f)
-                    ),
-                    label = { Text(NOTE) },
+                    textStyle = MaterialTheme.typography.body1,
                 )
 
             }

@@ -3,20 +3,25 @@ package ru.romazanov.notescompose.screens
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import ru.romazanov.notescompose.MainVM
 import ru.romazanov.notescompose.model.Note
 import ru.romazanov.notescompose.navigation.Screen
-import ru.romazanov.notescompose.utils.Constants
+import androidx.compose.foundation.Canvas
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.platform.LocalFocusManager
 
 @Composable
 fun AddScreen(
@@ -25,7 +30,8 @@ fun AddScreen(
 ) {
     var title by remember { mutableStateOf("") }
 
-    var text by remember{ mutableStateOf("") }
+    var subTitle by remember { mutableStateOf("") }
+    val focusManager = LocalFocusManager.current
 
 
     Scaffold(
@@ -36,14 +42,15 @@ fun AddScreen(
                     Icon(Icons.Filled.Add, contentDescription = null)
                 },
                 onClick = {
+                    focusManager.clearFocus()
                     viewModel.addNote(
                         Note(
                             title = title,
-                            subTitle = text
+                            subTitle = subTitle
                         )
-                    ) {
-                        navHostController.navigate(Screen.MainScreen.route)
-                    }
+                    )
+                    navHostController.navigate(Screen.MainScreen.route)
+
                 }
             )
         },
@@ -54,34 +61,51 @@ fun AddScreen(
                 .fillMaxSize()
         ) {
             item {
-                OutlinedTextField(
+                Text(text = "Заголовок",
+                    modifier = Modifier
+                        .padding(top = 24.dp, start = 24.dp, bottom = 4.dp),
+                    style = MaterialTheme.typography.h5
+                )
+
+                BasicTextField(
                     value = title,
                     onValueChange = {
                         title = it
                     },
                     modifier = Modifier
-                        .padding(10.dp)
+                        .padding(top = 24.dp, start = 24.dp)
                         .fillMaxWidth(),
-                    colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = MaterialTheme.colors.background,
-                        focusedIndicatorColor = Color.Blue.copy(alpha = 0.5f)
-                    ),
                     singleLine = true,
-                    label = { Text(Constants.Keys.NOTE) }
+                    textStyle = MaterialTheme.typography.h5
                 )
-                OutlinedTextField(
-                    value = text,
+
+               Canvas(modifier = Modifier.fillMaxWidth()
+                   .padding(top = 4.dp)) {
+                   drawLine(
+                       color = Color(0xFF2196F3),
+                       start = Offset(x = 60f, y = 0f),
+                       end = Offset(x = 1020f, y = 0f),
+                       strokeWidth = 5F,
+                       cap = StrokeCap.Round
+                   )
+               }
+
+                Text(text = "Заметка",
+                    modifier = Modifier
+                        .padding(top = 24.dp, start = 24.dp, bottom = 4.dp),
+                    style = MaterialTheme.typography.body1
+                )
+
+                BasicTextField(
+                    value = subTitle,
                     onValueChange = {
-                        text = it
+                        subTitle = it
+
                     },
                     modifier = Modifier
-                        .padding(10.dp)
+                        .padding(top = 24.dp, start = 24.dp)
                         .fillMaxWidth(),
-                    colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = MaterialTheme.colors.background,
-                        focusedIndicatorColor = Color.Blue.copy(alpha = 0.5f)
-                    ),
-                    label = { Text(Constants.Keys.TITLE)},
+                    textStyle = MaterialTheme.typography.body1,
                 )
             }
         }

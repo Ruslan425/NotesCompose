@@ -1,12 +1,10 @@
 package ru.romazanov.notescompose.ui
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,10 +23,13 @@ fun NoteCard(
 ) {
     Card(
         modifier = Modifier
-            .size(width = 400.dp, height = 100.dp),
-        elevation = 10.dp,
-        shape = RoundedCornerShape(10.dp),
-        onClick = onClick
+            .fillMaxWidth()
+            .height(100.dp)
+            .padding(6.dp),
+        elevation = 2.dp,
+        shape = RoundedCornerShape(4.dp),
+        onClick = onClick,
+        backgroundColor = MaterialTheme.colors.primary
     ) {
         Column (
             modifier = Modifier
@@ -43,7 +44,7 @@ fun NoteCard(
             Text(
                 text = text,
                 overflow = TextOverflow.Ellipsis,
-                maxLines = 3,
+                maxLines = 2,
                 modifier = Modifier.padding(8.dp)
             )
         }
