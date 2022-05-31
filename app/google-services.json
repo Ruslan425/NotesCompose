@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1047406842598",
+    "project_id": "note-compose",
+    "storage_bucket": "note-compose.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047406842598:android:c0f8d966ab759561116127",
+        "android_client_info": {
+          "package_name": "ru.romazanov.notescompose"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1047406842598-a593rb5qgc4g3ptrmb50i08s3ccd6h1r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAts3j9gMXlbJOgT2y_Mu6DYbw1wT7O57Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1047406842598-a593rb5qgc4g3ptrmb50i08s3ccd6h1r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

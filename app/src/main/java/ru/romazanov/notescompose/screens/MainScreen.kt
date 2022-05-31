@@ -10,19 +10,22 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import ru.romazanov.notescompose.MainVM
 import ru.romazanov.notescompose.navigation.Screen
 import ru.romazanov.notescompose.ui.NoteCard
+import ru.romazanov.notescompose.utils.TYPE_DB
+import ru.romazanov.notescompose.utils.TYPE_FIREBASE
+import ru.romazanov.notescompose.utils.TYPE_ROOM
 
 @Composable
 fun MainScreen(
     navHostController: NavHostController,
     viewModel: MainVM
 ) {
+
+
     val list = viewModel.readNotes().observeAsState(initial = listOf()).value
 
     Scaffold(
@@ -44,12 +47,17 @@ fun MainScreen(
                 .fillMaxSize()
         ) {
             items(list) { note ->
+                val noteId = when(TYPE_DB) {
+                    TYPE_ROOM -> note.id
+                    TYPE_FIREBASE -> note.firebaseId
+                    else -> "EMPTY"
+                }
                 NoteCard(
-                    text = note.subTitle,
+                    subTitle = note.subTitle,
                     title = note.title,
                     onClick = {
-                        println(note.id)
-                        navHostController.navigate(Screen.NoteScreen.route + "/${note.id}")
+                        println(noteId)
+                        navHostController.navigate(Screen.NoteScreen.route + "/${noteId}")
                     }
                 )
             }

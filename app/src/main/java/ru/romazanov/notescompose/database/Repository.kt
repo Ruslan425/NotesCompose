@@ -14,4 +14,8 @@ interface Repository {
 
     suspend fun delete(note: Note)
 
+    fun singOut() {}
+
+    fun connectToDatabase(onSuccess: () -> Unit, onError: (String) -> Unit) {}
+
 }

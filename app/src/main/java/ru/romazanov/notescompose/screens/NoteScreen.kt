@@ -22,7 +22,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalFocusManager
 import ru.romazanov.notescompose.navigation.Screen
-
+import ru.romazanov.notescompose.utils.TYPE_DB
+import ru.romazanov.notescompose.utils.TYPE_FIREBASE
+import ru.romazanov.notescompose.utils.TYPE_ROOM
 
 
 @Composable
@@ -33,11 +35,20 @@ fun NoteScreen(
 ) {
     val list = viewModel.readNotes().observeAsState(initial = listOf()).value
 
-    var note = list.firstOrNull { it.id == noteId?.toInt() } ?: Note(
-        id = 0,
-        title = "NONE",
-        subTitle = "ERROR"
-    )
+
+
+
+
+    val note = when(TYPE_DB) {
+        TYPE_ROOM -> {
+            list.firstOrNull { it.id == noteId?.toInt() } ?: Note()
+        }
+
+        TYPE_FIREBASE -> {
+            list.firstOrNull{ it.firebaseId == noteId } ?: Note()
+        }
+        else -> Note()
+    }
 
     val focusManager = LocalFocusManager.current
 
@@ -93,7 +104,8 @@ fun NoteScreen(
                             Note(
                                 id = note.id,
                                 title = title,
-                                subTitle = subTitle
+                                subTitle = subTitle,
+                                firebaseId = note.firebaseId
                             )
                         )
                     },
@@ -127,7 +139,8 @@ fun NoteScreen(
                             Note(
                                 id = note.id,
                                 title = title,
-                                subTitle = subTitle
+                                subTitle = subTitle,
+                                firebaseId = note.firebaseId
                             )
                         )
                     },
